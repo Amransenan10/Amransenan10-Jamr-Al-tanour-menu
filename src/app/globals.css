@@ -1,0 +1,87 @@
+@import "tailwindcss";
+
+:root {
+  /* Brand Colors */
+  --primary: #E63946;        /* Jamr (Ember) Red */
+  --primary-hover: #D62B3A;
+  --secondary: #FFB703;      /* Golden Glow */
+  --accent: #219EBC;
+  
+  /* Neutral Palette - Light */
+  --background: #F8F9FA;
+  --foreground: #1D1D1D;
+  --card-bg: rgba(255, 255, 255, 0.8);
+  --border-color: rgba(0, 0, 0, 0.1);
+  
+  /* Glassmorphism */
+  --glass-bg: rgba(255, 255, 255, 0.7);
+  --glass-border: rgba(255, 255, 255, 0.3);
+}
+
+.dark {
+  /* Neutral Palette - Dark */
+  --background: #0D0D0D;
+  --foreground: #F8F9FA;
+  --card-bg: rgba(29, 29, 29, 0.8);
+  --border-color: rgba(255, 255, 255, 0.1);
+  
+  /* Glassmorphism Dark */
+  --glass-bg: rgba(20, 20, 20, 0.7);
+  --glass-border: rgba(255, 255, 255, 0.05);
+}
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-primary: var(--primary);
+  --color-secondary: var(--secondary);
+  --color-accent: var(--accent);
+  --color-card: var(--card-bg);
+  --color-border: var(--border-color);
+  
+  --font-sans: var(--font-cairo);
+}
+
+body {
+  background: var(--background);
+  color: var(--foreground);
+  font-family: var(--font-cairo), system-ui, sans-serif;
+  direction: rtl;
+  min-height: 100vh;
+  -webkit-tap-highlight-color: transparent;
+}
+
+/* Glassmorphism Utilities */
+.glass {
+  background: var(--glass-bg);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid var(--glass-border);
+}
+
+/* Custom Animations */
+@keyframes slideUp {
+  from { transform: translateY(20px); opacity: 0; }
+  to { transform: translateY(0); opacity: 1; }
+}
+
+.animate-slide-up {
+  animation: slideUp 0.4s ease-out forwards;
+}
+
+/* Scrollbar Hiding */
+.hide-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+.hide-scrollbar {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+/* Gradient Text for Titles */
+.gradient-text {
+  background: linear-gradient(135deg, var(--primary), var(--secondary));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
