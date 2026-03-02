@@ -31,6 +31,7 @@ export default function Home() {
   const [loading, setLoading] = useState(true);
   const [activeCategoryId, setActiveCategoryId] = useState<string | null>(null);
   const [isCartOpen, setIsCartOpen] = useState(false);
+  const [fetchError, setFetchError] = useState<string | null>(null);
 
   const { cartItems, cartTotal, selectedBranch, orderType, setOrderType, clearCart } = useCart();
 
@@ -46,6 +47,7 @@ export default function Home() {
 
       if (categoriesError) {
         console.error("Error fetching categories:", categoriesError);
+        setFetchError(`خطأ في الأقسام: ${categoriesError.message}`);
       } else if (categoriesData) {
         setCategories(categoriesData);
       }
@@ -66,6 +68,7 @@ export default function Home() {
 
       if (productsError) {
         console.error("Error fetching products:", productsError);
+        setFetchError(prev => prev ? `${prev} | خطأ في المنتجات: ${productsError.message}` : `خطأ في المنتجات: ${productsError.message}`);
       } else if (productsData) {
         const mappedProducts = productsData.map((p: any) => ({
           ...p,
@@ -116,6 +119,14 @@ export default function Home() {
         />
 
         <BranchSelector />
+
+        {fetchError && (
+          <div className="mt-8 p-6 bg-red-500/10 border-2 border-red-500/20 rounded-3xl text-center">
+            <p className="text-red-500 font-bold mb-2">تنبيه: فشل الاتصال بقاعدة البيانات</p>
+            <p className="text-red-500/70 text-xs dir-ltr">{fetchError}</p>
+            <p className="mt-4 text-xs text-foreground/40 font-bold">تأكد من إضافة Environment Variables في Vercel بشكل صحيح</p>
+          </div>
+        )}
 
         <div className="mt-2 text-right">
           {loading ? (
