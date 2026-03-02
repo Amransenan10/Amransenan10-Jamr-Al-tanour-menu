@@ -39,15 +39,19 @@ export default function Home() {
       setLoading(true);
 
       // Fetch Categories
-      const { data: categoriesData } = await supabase
+      const { data: categoriesData, error: categoriesError } = await supabase
         .from('categories')
         .select('id, name')
-        .order('display_order'); // is_active check removed if not in schema or if we want all active
+        .order('display_order');
 
-      if (categoriesData) setCategories(categoriesData);
+      if (categoriesError) {
+        console.error("Error fetching categories:", categoriesError);
+      } else if (categoriesData) {
+        setCategories(categoriesData);
+      }
 
       // Fetch Products with category names
-      const { data: productsData } = await supabase
+      const { data: productsData, error: productsError } = await supabase
         .from('products')
         .select(`
           id, 
@@ -60,7 +64,9 @@ export default function Home() {
         `)
         .eq('is_available', true);
 
-      if (productsData) {
+      if (productsError) {
+        console.error("Error fetching products:", productsError);
+      } else if (productsData) {
         const mappedProducts = productsData.map((p: any) => ({
           ...p,
           category_name: p.categories?.name
