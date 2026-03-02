@@ -4,7 +4,7 @@ import React, { useEffect, useState } from "react";
 import Header from "@/components/Header";
 import CategoryBar from "@/components/CategoryBar";
 import ProductCard from "@/components/ProductCard";
-import { supabase } from "@/lib/supabase";
+import { supabase, isConfigured } from "@/lib/supabase";
 import { useCart } from "@/context/CartContext";
 import BranchSelector from "@/components/BranchSelector";
 import { ShoppingBasket, Truck, Store, X } from "lucide-react";
@@ -37,6 +37,11 @@ export default function Home() {
 
   useEffect(() => {
     async function fetchData() {
+      if (!isConfigured) {
+        setFetchError("تنبيه: لم يتم العثور على مفاتيح Supabase. يرجى التأكد من إضافتها في إعدادات Vercel ثم إعادة الرفع.");
+        setLoading(false);
+        return;
+      }
       setLoading(true);
 
       // Fetch Categories
